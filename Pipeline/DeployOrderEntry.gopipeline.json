@@ -1,0 +1,198 @@
+{
+  "group": "DISD",
+  "name": "DeployOrderEntry",
+  "display_order_weight": -1.0,
+  "label_template": "Deploy Order Entry ${COUNT}",
+  "lock_behavior": "unlockWhenFinished",
+  "environment_variables": [],
+  "parameters": [],
+  "materials": [
+    {
+      "pipeline": "BuildOrderEntry",
+      "stage": "BuildOrderEntry",
+      "ignore_for_scheduling": false,
+      "name": "OrderEntry",
+      "type": "dependency"
+    }
+  ],
+  "stages": [
+    {
+      "name": "DeployOrderEntry",
+      "fetch_materials": true,
+      "never_cleanup_artifacts": false,
+      "clean_working_directory": false,
+      "approval": {
+        "type": "success",
+        "users": [],
+        "roles": [],
+        "allow_only_on_success": false
+      },
+      "environment_variables": [],
+      "jobs": [
+        {
+          "name": "Deploy",
+          "environment_variables": [
+            {
+              "name": "OUTPUT",
+              "value": "C:\\Source\\BuildOutput"
+            }
+          ],
+          "tabs": [],
+          "resources": [],
+          "artifacts": [],
+          "timeout": 0.0,
+          "tasks": [
+            {
+              "command": "echo",
+              "timeout": -1.0,
+              "arguments": [
+                "%OUTPUT%",
+                "Started",
+                "%date%",
+                "%time%"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "source": "Bitmaps",
+              "is_source_a_file": false,
+              "destination": "",
+              "pipeline": "BuildOrderEntry",
+              "stage": "BuildOrderEntry",
+              "job": "Build",
+              "artifact_origin": "gocd",
+              "run_if": "passed",
+              "type": "fetch"
+            },
+            {
+              "source": "Data",
+              "is_source_a_file": false,
+              "destination": "",
+              "pipeline": "BuildOrderEntry",
+              "stage": "BuildOrderEntry",
+              "job": "Build",
+              "artifact_origin": "gocd",
+              "run_if": "passed",
+              "type": "fetch"
+            },
+            {
+              "source": "DDSrc",
+              "is_source_a_file": false,
+              "destination": "",
+              "pipeline": "BuildOrderEntry",
+              "stage": "BuildOrderEntry",
+              "job": "Build",
+              "artifact_origin": "gocd",
+              "run_if": "passed",
+              "type": "fetch"
+            },
+            {
+              "source": "Programs",
+              "is_source_a_file": false,
+              "destination": "",
+              "pipeline": "BuildOrderEntry",
+              "stage": "BuildOrderEntry",
+              "job": "Build",
+              "artifact_origin": "gocd",
+              "run_if": "passed",
+              "type": "fetch"
+            },
+            {
+              "source": "Scripts",
+              "is_source_a_file": false,
+              "destination": "",
+              "pipeline": "BuildOrderEntry",
+              "stage": "BuildOrderEntry",
+              "job": "Build",
+              "artifact_origin": "gocd",
+              "run_if": "passed",
+              "type": "fetch"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\Scripts\\CopyBuildOutput.bat",
+                ".\\CopyBuildOutput.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\Scripts\\CopySubTree.bat",
+                ".\\CopySubTree.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopyBuildOutput.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Programs",
+                "%OUTPUT%Programs"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Bitmaps",
+                "%OUTPUT%Bitmaps",
+                "*.*"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Data",
+                "%OUTPUT%Data",
+                "*.int"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Data",
+                "%OUTPUT%Data",
+                "Filelist.xml"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\DDSrc",
+                "%OUTPUT%DDSrc",
+                "*.fd"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

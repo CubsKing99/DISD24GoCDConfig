@@ -1,0 +1,270 @@
+{
+  "group": "DISD",
+  "name": "OrderEntry",
+  "display_order_weight": -1.0,
+  "label_template": "Order Entry Build ${COUNT}",
+  "lock_behavior": "none",
+  "environment_variables": [
+    {
+      "name": "WORKSPACE",
+      "value": ".\\DF24OrderEntry.sws"
+    },
+    {
+      "name": "OUTPUT",
+      "value": "C:\\Source\\BuildOutput\\"
+    }
+  ],
+  "parameters": [],
+  "materials": [
+    {
+      "url": "https://github.com/CubsKing99/DF24OrderEntry",
+      "branch": "master",
+      "shallow_clone": false,
+      "filter": {
+        "ignore": [],
+        "includes": []
+      },
+      "destination": "OrderEntry",
+      "auto_update": true,
+      "name": "OrderEntry",
+      "type": "git"
+    },
+    {
+      "url": "https://github.com/CubsKing99/DFBuildSetup",
+      "branch": "master",
+      "shallow_clone": false,
+      "filter": {
+        "ignore": [],
+        "includes": []
+      },
+      "destination": "DFBuildSetup",
+      "auto_update": true,
+      "name": "DFBuildSetup",
+      "type": "git"
+    }
+  ],
+  "stages": [
+    {
+      "name": "BuildOrderEntry",
+      "fetch_materials": true,
+      "never_cleanup_artifacts": false,
+      "clean_working_directory": false,
+      "approval": {
+        "type": "success",
+        "users": [],
+        "roles": [],
+        "allow_only_on_success": false
+      },
+      "environment_variables": [],
+      "jobs": [
+        {
+          "name": "Build",
+          "environment_variables": [],
+          "tabs": [],
+          "resources": [],
+          "artifacts": [
+            {
+              "source": "OrderEntry/Programs/Order.exe",
+              "destination": "Programs",
+              "type": "build"
+            },
+            {
+              "source": "OrderEntry/Bitmaps/*",
+              "destination": "Bitmaps",
+              "type": "build"
+            },
+            {
+              "source": "OrderEntry/DDSrc/*.fd",
+              "destination": "DDSrc",
+              "type": "build"
+            },
+            {
+              "source": "OrderEntry/*.int",
+              "destination": "Data",
+              "type": "build"
+            },
+            {
+              "source": "OrderEntry/Filelist.xml",
+              "destination": "Data",
+              "type": "build"
+            }
+          ],
+          "timeout": 0.0,
+          "tasks": [
+            {
+              "command": "echo",
+              "timeout": -1.0,
+              "arguments": [
+                "%WORKSPACE%",
+                "%DF24Path%",
+                "%OUTPUT%",
+                "Started",
+                "%date%",
+                "%time%"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Scripts\\CopySubTree.bat",
+                ".\\CopySubTree.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Scripts\\CompileSource.bat",
+                ".\\OrderEntry\\CompileSource.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Scripts\\UpdateFileList.bat",
+                ".\\UpdateFileList.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Scripts\\PrecompileFile.bat",
+                ".\\OrderEntry\\PrecompileFile.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CompileSource.bat",
+              "working_directory": "./OrderEntry",
+              "timeout": -1.0,
+              "arguments": [
+                "Order",
+                "%WORKSPACE%"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CompileSource.bat",
+              "working_directory": "./OrderEntry",
+              "timeout": -1.0,
+              "arguments": [
+                "FileListXMLCmdLine",
+                "%WORKSPACE%"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Scripts\\CopyBuildOutput.bat",
+                ".\\CopyBuildOutput.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopyBuildOutput.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Programs",
+                "%OUTPUT%Programs"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Bitmaps",
+                "%OUTPUT%Bitmaps",
+                "*.*"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Data",
+                "%OUTPUT%Data",
+                "*.int"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\Data",
+                "%OUTPUT%Data",
+                "Filelist.xml"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CopySubTree.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\OrderEntry\\DDSrc",
+                "%OUTPUT%DDSrc",
+                "*.fd"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\DFBuildSetup\\Tools\\CopyChangedFiles.exe",
+                ".\\CopyChangedFiles.exe"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "UpdateFileList.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                "%OUTPUT%Programs\\"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
