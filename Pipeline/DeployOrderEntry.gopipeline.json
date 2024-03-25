@@ -136,7 +136,7 @@
               "working_directory": "./",
               "timeout": -1.0,
               "arguments": [
-                ".\\OrderEntry\\Programs",
+                ".\\Programs",
                 "%OUTPUT%Programs"
               ],
               "run_if": "passed",
@@ -147,7 +147,7 @@
               "working_directory": "./",
               "timeout": -1.0,
               "arguments": [
-                ".\\OrderEntry\\Bitmaps",
+                ".\\Bitmaps",
                 "%OUTPUT%Bitmaps",
                 "*.*"
               ],
@@ -159,19 +159,7 @@
               "working_directory": "./",
               "timeout": -1.0,
               "arguments": [
-                ".\\OrderEntry\\Data",
-                "%OUTPUT%Data",
-                "*.int"
-              ],
-              "run_if": "passed",
-              "type": "exec"
-            },
-            {
-              "command": "CopySubTree.bat",
-              "working_directory": "./",
-              "timeout": -1.0,
-              "arguments": [
-                ".\\OrderEntry\\Data",
+                ".\\Data",
                 "%OUTPUT%Data",
                 "Filelist.xml"
               ],
@@ -183,7 +171,7 @@
               "working_directory": "./",
               "timeout": -1.0,
               "arguments": [
-                ".\\OrderEntry\\DDSrc",
+                ".\\DDSrc",
                 "%OUTPUT%DDSrc",
                 "*.fd"
               ],
