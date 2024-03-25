@@ -34,7 +34,7 @@
           "environment_variables": [
             {
               "name": "OUTPUT",
-              "value": "C:\\Source\\BuildOutput"
+              "value": "C:\\Source\\BuildOutput\\"
             }
           ],
           "tabs": [],
