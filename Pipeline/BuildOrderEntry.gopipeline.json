@@ -74,18 +74,13 @@
               "type": "build"
             },
             {
+              "source": "OrderEntry/Data/Filelist.xml",
+              "destination": "Data",
+              "type": "build"
+            },
+            {
               "source": "OrderEntry/DDSrc/*.fd",
               "destination": "DDSrc",
-              "type": "build"
-            },
-            {
-              "source": "OrderEntry/*.int",
-              "destination": "Data",
-              "type": "build"
-            },
-            {
-              "source": "OrderEntry/Filelist.xml",
-              "destination": "Data",
               "type": "build"
             },
             {
