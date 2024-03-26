@@ -1,8 +1,8 @@
 {
   "group": "DISD",
-  "name": "BuildOrderEntry",
+  "name": "BuildMarkDemo",
   "display_order_weight": -1.0,
-  "label_template": "Build Order Entry ${COUNT}",
+  "label_template": "Build Mark Demo ${COUNT}",
   "lock_behavior": "none",
   "environment_variables": [
     {
@@ -45,7 +45,7 @@
   ],
   "stages": [
     {
-      "name": "BuildOrderEntry",
+      "name": "BuildMarkDemo",
       "fetch_materials": true,
       "never_cleanup_artifacts": false,
       "clean_working_directory": false,
@@ -64,7 +64,12 @@
           "resources": [],
           "artifacts": [
             {
-              "source": "OrderEntry/Programs/Order.exe",
+              "source": "OrderEntry/Programs/MarkDemo.exe",
+              "destination": "Programs",
+              "type": "build"
+            },
+            {
+              "source": "OrderEntry/Programs/FileListXMLCmdLine.exe",
               "destination": "Programs",
               "type": "build"
             },
@@ -90,6 +95,11 @@
             },
             {
               "source": "CopyBuildOutput.bat",
+              "destination": "Scripts",
+              "type": "build"
+            },
+            {
+              "source": "UpdateFileList.bat",
               "destination": "Scripts",
               "type": "build"
             }
@@ -148,7 +158,18 @@
               "working_directory": "./OrderEntry",
               "timeout": -1.0,
               "arguments": [
-                "Order",
+                "FileListXMLCmdLine",
+                "%WORKSPACE%"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "CompileSource.bat",
+              "working_directory": "./OrderEntry",
+              "timeout": -1.0,
+              "arguments": [
+                "MarkDemo",
                 "%WORKSPACE%"
               ],
               "run_if": "passed",

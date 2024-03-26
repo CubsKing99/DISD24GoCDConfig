@@ -1,23 +1,23 @@
 {
   "group": "DISD",
-  "name": "DeployOrderEntry",
+  "name": "DeployMarkDemo",
   "display_order_weight": -1.0,
-  "label_template": "Deploy Order Entry ${COUNT}",
+  "label_template": "Deploy Mark Demo ${COUNT}",
   "lock_behavior": "unlockWhenFinished",
   "environment_variables": [],
   "parameters": [],
   "materials": [
     {
-      "pipeline": "BuildOrderEntry",
-      "stage": "BuildOrderEntry",
+      "pipeline": "BuildMarkDemo",
+      "stage": "BuildMarkDemo",
       "ignore_for_scheduling": false,
-      "name": "OrderEntry",
+      "name": "MarkDemo",
       "type": "dependency"
     }
   ],
   "stages": [
     {
-      "name": "DeployOrderEntry",
+      "name": "DeployMarkDemo",
       "fetch_materials": true,
       "never_cleanup_artifacts": false,
       "clean_working_directory": false,
@@ -58,8 +58,8 @@
               "source": "Bitmaps",
               "is_source_a_file": false,
               "destination": "",
-              "pipeline": "BuildOrderEntry",
-              "stage": "BuildOrderEntry",
+              "pipeline": "BuildMarkDemo",
+              "stage": "BuildMarkDemo",
               "job": "Build",
               "artifact_origin": "gocd",
               "run_if": "passed",
@@ -69,8 +69,8 @@
               "source": "Data",
               "is_source_a_file": false,
               "destination": "",
-              "pipeline": "BuildOrderEntry",
-              "stage": "BuildOrderEntry",
+              "pipeline": "BuildMarkDemo",
+              "stage": "BuildMarkDemo",
               "job": "Build",
               "artifact_origin": "gocd",
               "run_if": "passed",
@@ -80,8 +80,8 @@
               "source": "DDSrc",
               "is_source_a_file": false,
               "destination": "",
-              "pipeline": "BuildOrderEntry",
-              "stage": "BuildOrderEntry",
+              "pipeline": "BuildMarkDemo",
+              "stage": "BuildMarkDemo",
               "job": "Build",
               "artifact_origin": "gocd",
               "run_if": "passed",
@@ -91,8 +91,8 @@
               "source": "Programs",
               "is_source_a_file": false,
               "destination": "",
-              "pipeline": "BuildOrderEntry",
-              "stage": "BuildOrderEntry",
+              "pipeline": "BuildMarkDemo",
+              "stage": "BuildMarkDemo",
               "job": "Build",
               "artifact_origin": "gocd",
               "run_if": "passed",
@@ -102,8 +102,8 @@
               "source": "Scripts",
               "is_source_a_file": false,
               "destination": "",
-              "pipeline": "BuildOrderEntry",
-              "stage": "BuildOrderEntry",
+              "pipeline": "BuildMarkDemo",
+              "stage": "BuildMarkDemo",
               "job": "Build",
               "artifact_origin": "gocd",
               "run_if": "passed",
@@ -127,6 +127,17 @@
               "arguments": [
                 ".\\Scripts\\CopySubTree.bat",
                 ".\\CopySubTree.bat"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "copy",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                ".\\Scripts\\UpdateFileList.bat",
+                ".\\UpdateFileList.bat"
               ],
               "run_if": "passed",
               "type": "exec"
@@ -174,6 +185,16 @@
                 ".\\DDSrc",
                 "%OUTPUT%DDSrc",
                 "*.fd"
+              ],
+              "run_if": "passed",
+              "type": "exec"
+            },
+            {
+              "command": "UpdateFileList.bat",
+              "working_directory": "./",
+              "timeout": -1.0,
+              "arguments": [
+                "%OUTPUT%Programs\\"
               ],
               "run_if": "passed",
               "type": "exec"
